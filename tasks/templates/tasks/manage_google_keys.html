@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Manage Google OAuth Keys</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <ul>
+        {% for key in keys %}
+            <li>{{ key.client_id }} - {{ key.created_at }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

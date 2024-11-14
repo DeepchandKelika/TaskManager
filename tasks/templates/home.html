@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron text-center bg-light py-5">
+        <h1 class="display-4">Welcome to the Task Management App!</h1>
+        <p class="lead">Manage your tasks efficiently and stay organized.</p>
+        <hr class="my-4">
+        {% if user.is_authenticated %}
+            <p>Hello, {{ user.username }}! Ready to manage your tasks?</p>
+            <a href="{% url 'task_list' %}" class="btn btn-primary btn-lg">View My Tasks</a>
+        {% else %}
+            <p>Please log in to manage your tasks and stay on top of your workflow.</p>
+            <a href="{% provider_login_url 'google' %}" class="btn btn-success btn-lg">Login with Google</a>
+        {% endif %}
+    </div>
+
+    <!-- Additional Features Section -->
+    <div class="row mt-5">
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create Tasks</h5>
+                    <p class="card-text">Easily create new tasks and set their priorities.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'task_create' %}" class="btn btn-outline-primary">Create a Task</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Track Progress</h5>
+                    <p class="card-text">Stay on track by monitoring task completion and deadlines.</p>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'task_list' %}" class="btn btn-outline-primary">View Tasks</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Collaborate</h5>
+                    <p class="card-text">Invite team members and collaborate effectively.</p>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="{% url 'invite_user' %}" class="btn btn-outline-primary">Invite Users</a>
+                    {% else %}
+                        <a href="#" class="btn btn-outline-primary disabled">Invite Users(Admin only)</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

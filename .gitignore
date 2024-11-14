@@ -1,0 +1,26 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+migrations/__pycache__/
+
+
+# Ignore virtual environments
+venv/
+ENV/
+
+# Ignore database files
+db.sqlite3
+
+# Ignore .env files with sensitive information
+.env
+
+# Ignore compiled files and cache
+*.py[cod]
+*$py.class
+
+# Ignore Django secrets (if applicable)
+task_manager/settings.py
+
+# Ignore other OS-specific files
+.DS_Store
+Thumbs.db

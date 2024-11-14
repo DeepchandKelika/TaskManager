@@ -1,0 +1,9 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Welcome to the Admin Panel</h1>
+<div class="dashboard">
+    <a href="{% url 'invite_user' %}" class="button">Invite User</a>
+</div>
+{{ block.super }}
+{% endblock %}

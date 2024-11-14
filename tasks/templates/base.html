@@ -1,0 +1,92 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task Management App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet"> 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">Task Manager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Welcome, {{ user.username }}</a>
+                    </li>
+
+                    <li> <a href="{% url 'task_list' %}" class="btn btn-primary btn-md mr-2">View My Tasks</a></li>
+                    <!-- <li> <a href="{% url 'account_logout' %}?next=/" class="btn btn-danger btn-md">Logout</a></li> -->
+                    <li><a href="{% url 'logout_view' %}?next=/" class="btn btn-danger btn-md" id="logout-link">Sign Out</a></li>
+
+                    {% if user.is_staff %}
+                        <li>
+                            <a class="btn btn-success" href="{% url 'manage_google_keys' %}">Manage OAuth Keys</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-success" href="{% url 'invite_user' %}">Invite User</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li><a href="{% url 'account_login' %}" class="btn btn-primary btn-md mr-2">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}" class="btn btn-secondary btn-danger btn-md">Sign Up</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% provider_login_url 'google' %}">Login with Google</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to sign out?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <a href="#" id="confirm-logout" class="btn btn-danger">Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.getElementById('logout-link');
+            const confirmLogoutButton = document.getElementById('confirm-logout');
+
+            if (logoutLink && confirmLogoutButton) {
+                logoutLink.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link action
+                    $('#logoutModal').modal('show'); // Show the Bootstrap modal
+                    confirmLogoutButton.href = logoutLink.href; // Set the logout URL for the confirm button
+                });
+            }
+        });
+    </script>
+</body>
+</html>
