@@ -19,7 +19,7 @@ db.sqlite3
 *$py.class
 
 # Ignore Django secrets (if applicable)
-task_manager/settings.py
+# task_manager/settings.py
 
 # Ignore other OS-specific files
 .DS_Store
